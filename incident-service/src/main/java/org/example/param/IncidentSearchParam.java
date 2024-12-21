@@ -19,8 +19,11 @@ public class IncidentSearchParam implements Serializable {
     @ApiModelProperty("incident statuses")
     private List<Integer> statuses;
 
-    @ApiModelProperty("incident creators")
-    private List<String> creators;
+    @ApiModelProperty("fuzzy search Creator")
+    private String searchCreator;
+
+    @ApiModelProperty("fuzzy search Info")
+    private String searchInfo;
 
     @ApiModelProperty("incident levels")
     private List<Integer> levels;

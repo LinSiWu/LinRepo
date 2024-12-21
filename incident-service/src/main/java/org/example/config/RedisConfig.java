@@ -16,7 +16,6 @@ import java.io.Serializable;
 
 @Configuration
 public class RedisConfig {
-
     @Bean
     public RedisTemplate<String, Serializable> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();

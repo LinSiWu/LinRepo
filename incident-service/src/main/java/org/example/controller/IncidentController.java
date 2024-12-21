@@ -31,28 +31,24 @@ public class IncidentController {
     @ApiOperation(value = "search incidents by condition")
     @PostMapping("/search")
     public ResponseDTO<PageResult<List<IncidentResult>>> search(@Validated @RequestBody IncidentSearchParam incidentSearchParam) {
-        // TODO
-        return ResponseDTO.success(null);
+        return ResponseDTO.success(incidentService.pageSearchByCondition(incidentSearchParam));
     }
 
     @ApiOperation(value = "update incident")
-    @PostMapping("/update")
-    public ResponseDTO<Boolean> update(@Validated @RequestBody IncidentParam incidentParam) {
-        // TODO
-        return ResponseDTO.success(null);
+    @PutMapping("/{id}")
+    public ResponseDTO<Boolean> update(@PathVariable Long id, @Validated @RequestBody IncidentParam incidentParam) {
+        return ResponseDTO.success(incidentService.update(id, incidentParam));
     }
 
     @ApiOperation(value = "create incident")
-    @PostMapping("/create")
+    @PostMapping
     public ResponseDTO<Long> create(@Validated @RequestBody IncidentParam incidentParam) {
-        // TODO
-        return ResponseDTO.success(null);
+        return ResponseDTO.success(incidentService.insert(incidentParam));
     }
 
     @ApiOperation(value = "delete incident")
     @DeleteMapping("/{id}")
     public ResponseDTO<Boolean> delete(@PathVariable Long id) {
-        // TODO
-        return ResponseDTO.success(null);
+        return ResponseDTO.success(incidentService.delete(id));
     }
 }

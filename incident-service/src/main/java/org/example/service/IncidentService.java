@@ -12,7 +12,7 @@ public interface IncidentService {
 
     PageResult<List<IncidentResult>> pageSearchByCondition(IncidentSearchParam param);
 
-    Boolean update(IncidentParam param);
+    Boolean update(Long id, IncidentParam param);
 
     Boolean delete(Long id);
 
