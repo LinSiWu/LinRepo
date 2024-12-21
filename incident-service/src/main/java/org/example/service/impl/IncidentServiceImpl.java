@@ -88,7 +88,6 @@ public class IncidentServiceImpl implements IncidentService {
         if (byId == null) {
             throw new IncidentException(ResCodeEnum.RESPONSE_CODE_REQ_INVALID.getCode(), "update incident id not exist");
         }
-        LambdaUpdateWrapper<Incident> wrapper = new LambdaUpdateWrapper<>();
         Incident incident = new Incident();
         incident.setId(id);
         incident.setIncidentLevel(param.getLevel());
@@ -96,8 +95,7 @@ public class IncidentServiceImpl implements IncidentService {
         incident.setStatus(param.getStatus());
         incident.setCreateBy(param.getCreator());
         incident.setUpdateTime(new Date(System.currentTimeMillis()));
-        wrapper.setEntity(incident);
-        return incidentDaoService.update(wrapper);
+        return incidentDaoService.updateById(incident);
     }
 
     @Override

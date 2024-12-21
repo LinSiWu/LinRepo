@@ -44,7 +44,6 @@ public class UnitTest {
     public void initTableBeforeEachTest() {
         // record 1
         Incident incident1 = new Incident();
-        incident1.setId(1L);
         incident1.setInfo("test record 1");
         incident1.setIncidentLevel(IncidentLevelEnum.HIGH.getCode());
         incident1.setStatus(IncidentStatusEnum.FINISH.getCode());
@@ -53,7 +52,6 @@ public class UnitTest {
 
         // record 2
         Incident incident2 = new Incident();
-        incident2.setId(2L);
         incident2.setInfo("test record 2");
         incident2.setIncidentLevel(IncidentLevelEnum.LOW.getCode());
         incident2.setStatus(IncidentStatusEnum.PROCESSING.getCode());
@@ -64,9 +62,17 @@ public class UnitTest {
 
     @Test
     public void testQueryIncidentById() throws Exception {
-        mockMvc.perform(get("/incident/{id}", 1L))
+        // first create an incident and get id
+        IncidentParam param = new IncidentParam();
+        param.setLevel(IncidentLevelEnum.LOW.getCode());
+        param.setStatus(IncidentStatusEnum.FINISH.getCode());
+        param.setCreator("someone");
+        param.setInfo("something");
+        Long insertId = incidentService.insert(param);
+
+        mockMvc.perform(get("/incident/{id}", insertId))
                 .andExpect(jsonPath("$.code").value(ResCodeEnum.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.data.incidentId").value(1L));
+                .andExpect(jsonPath("$.data.incidentId").value(insertId));
     }
 
     @Test
@@ -97,29 +103,44 @@ public class UnitTest {
 
     @Test
     public void testDeleteIncidentIfIdExist() throws Exception {
-        mockMvc.perform(delete("/incident/{id}", 1L))
+        // first create an incident and get id
+        IncidentParam param = new IncidentParam();
+        param.setLevel(IncidentLevelEnum.LOW.getCode());
+        param.setStatus(IncidentStatusEnum.FINISH.getCode());
+        param.setCreator("someone");
+        param.setInfo("something");
+        Long insertId = incidentService.insert(param);
+
+        mockMvc.perform(delete("/incident/{id}", insertId))
                 .andExpect(jsonPath("$.code").value(ResCodeEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data").value(true));
     }
 
     @Test
     public void testDeleteIncidentIfIdNotExist() throws Exception {
-        mockMvc.perform(delete("/incident/{id}", 100L))
+        mockMvc.perform(delete("/incident/{id}", -1L))
                 .andExpect(jsonPath("$.code").value(ResCodeEnum.FAILURE.getCode()))
                 .andExpect(jsonPath("$.data").value(ResCodeEnum.RESPONSE_CODE_REQ_INVALID.getCode()));
     }
 
     @Test
     public void testUpdateIncidentIfAllCorrect() throws Exception {
-        Long toUpdateId = 1L;
+        // first create an incident and get id
         IncidentParam param = new IncidentParam();
-        param.setInfo("update record 1");
-        param.setCreator("creator");
         param.setLevel(IncidentLevelEnum.LOW.getCode());
-        param.setStatus(IncidentStatusEnum.PROCESSING.getCode());
+        param.setStatus(IncidentStatusEnum.FINISH.getCode());
+        param.setCreator("someone");
+        param.setInfo("something");
+        Long insertId = incidentService.insert(param);
 
-        mockMvc.perform(put("/incident/{id}", toUpdateId)
-                        .content(JSON.toJSONString(param))
+        IncidentParam updateParam = new IncidentParam();
+        updateParam.setInfo("update record");
+        updateParam.setCreator("creator");
+        updateParam.setLevel(IncidentLevelEnum.LOW.getCode());
+        updateParam.setStatus(IncidentStatusEnum.PROCESSING.getCode());
+
+        mockMvc.perform(put("/incident/{id}", insertId)
+                        .content(JSON.toJSONString(updateParam))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResCodeEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data").value(true));
@@ -159,12 +180,14 @@ public class UnitTest {
         IncidentSearchParam param = new IncidentSearchParam();
         param.setLevels(Arrays.asList(IncidentLevelEnum.HIGH.getCode(), IncidentLevelEnum.LOW.getCode()));
         param.setStatuses(Arrays.asList(IncidentStatusEnum.PROCESSING.getCode(), IncidentStatusEnum.FINISH.getCode()));
-        mockMvc.perform(post("/incident")
+        param.setPageSize(10L);
+        param.setCurrentPage(1L);
+        mockMvc.perform(post("/incident/search")
                         .content(JSON.toJSONString(param))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResCodeEnum.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.data").isArray())
-                .andExpect(jsonPath("$.data").isNotEmpty());
+                .andExpect(jsonPath("$.data").isMap())
+                .andExpect(jsonPath("$.data.total").value(2L));
     }
 
     @Test
