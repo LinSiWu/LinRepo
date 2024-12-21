@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS `tbl_incident`;
 CREATE TABLE `tbl_incident`
 (
     id BIGINT NOT NULL AUTO_INCREMENT COMMENT 'incident id',
-    status INT NOT NULL COMMENT 'incident status',
-    incident_level INT NOT NULL COMMENT 'incident level',
+    status INT NOT NULL DEFAULT 0 COMMENT 'incident status',
+    incident_level INT NOT NULL DEFAULT 0 COMMENT 'incident level',
     create_time DATETIME NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'incident create time',
     update_time DATETIME NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'incident update time',
     create_by VARCHAR(256) NULL DEFAULT NULL COMMENT 'incident creator',

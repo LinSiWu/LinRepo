@@ -2,7 +2,7 @@ package org.example.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.example.common.ResponseDTO;
+import org.example.common.Response;
 import org.example.param.IncidentParam;
 import org.example.param.IncidentSearchParam;
 import org.example.result.IncidentResult;
@@ -24,31 +24,31 @@ public class IncidentController {
 
     @ApiOperation(value = "query one incident by id")
     @GetMapping("/{id}")
-    public ResponseDTO<IncidentResult> getById(@PathVariable Long id) {
-        return ResponseDTO.success(incidentService.getById(id));
+    public Response<IncidentResult> getById(@PathVariable Long id) {
+        return Response.success(incidentService.getById(id));
     }
 
     @ApiOperation(value = "search incidents by condition")
     @PostMapping("/search")
-    public ResponseDTO<PageResult<List<IncidentResult>>> search(@Validated @RequestBody IncidentSearchParam incidentSearchParam) {
-        return ResponseDTO.success(incidentService.pageSearchByCondition(incidentSearchParam));
+    public Response<PageResult<List<IncidentResult>>> search(@Validated @RequestBody IncidentSearchParam incidentSearchParam) {
+        return Response.success(incidentService.pageSearchByCondition(incidentSearchParam));
     }
 
     @ApiOperation(value = "update incident")
     @PutMapping("/{id}")
-    public ResponseDTO<Boolean> update(@PathVariable Long id, @Validated @RequestBody IncidentParam incidentParam) {
-        return ResponseDTO.success(incidentService.update(id, incidentParam));
+    public Response<Boolean> update(@PathVariable Long id, @Validated @RequestBody IncidentParam incidentParam) {
+        return Response.success(incidentService.update(id, incidentParam));
     }
 
     @ApiOperation(value = "create incident")
     @PostMapping
-    public ResponseDTO<Long> create(@Validated @RequestBody IncidentParam incidentParam) {
-        return ResponseDTO.success(incidentService.insert(incidentParam));
+    public Response<Long> create(@Validated @RequestBody IncidentParam incidentParam) {
+        return Response.success(incidentService.insert(incidentParam));
     }
 
     @ApiOperation(value = "delete incident")
     @DeleteMapping("/{id}")
-    public ResponseDTO<Boolean> delete(@PathVariable Long id) {
-        return ResponseDTO.success(incidentService.delete(id));
+    public Response<Boolean> delete(@PathVariable Long id) {
+        return Response.success(incidentService.delete(id));
     }
 }

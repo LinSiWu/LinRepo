@@ -1,7 +1,7 @@
 package org.example.exception;
 
 import org.example.common.ResCodeEnum;
-import org.example.common.ResponseDTO;
+import org.example.common.Response;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -16,13 +16,13 @@ import java.util.Set;
 public class BizExceptionHandler {
     // handle incident biz exception
     @ExceptionHandler(IncidentException.class)
-    public ResponseDTO<Object> onIncidentException(IncidentException e) {
-        return ResponseDTO.error(e.getCode(), e.getMessage());
+    public Response<Object> onIncidentException(IncidentException e) {
+        return Response.error(e.getCode(), e.getMessage());
     }
 
     // handle param validation exception
     @ExceptionHandler({ConstraintViolationException.class})
-    public ResponseDTO<Object> onConstraintViolationException(ConstraintViolationException e) {
+    public Response<Object> onConstraintViolationException(ConstraintViolationException e) {
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
         Iterator<ConstraintViolation<?>> iterator = constraintViolations.iterator();
         List<String> msgList = new ArrayList<>();
@@ -30,6 +30,6 @@ public class BizExceptionHandler {
             ConstraintViolation<?> cvl = iterator.next();
             msgList.add(cvl.getMessageTemplate());
         }
-        return ResponseDTO.error(ResCodeEnum.RESPONSE_CODE_PARAM_ERROR.getCode(), msgList.toString());
+        return Response.error(ResCodeEnum.RESPONSE_CODE_PARAM_ERROR.getCode(), msgList.toString());
     }
 }

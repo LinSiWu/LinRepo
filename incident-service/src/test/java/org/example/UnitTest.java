@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -47,8 +46,8 @@ public class UnitTest {
         Incident incident1 = new Incident();
         incident1.setId(1L);
         incident1.setInfo("test record 1");
-        incident1.setIncidentLevel(1);
-        incident1.setStatus(1);
+        incident1.setIncidentLevel(IncidentLevelEnum.HIGH.getCode());
+        incident1.setStatus(IncidentStatusEnum.FINISH.getCode());
         incident1.setCreateBy("creator1");
         incidentMapper.insert(incident1);
 
@@ -56,8 +55,8 @@ public class UnitTest {
         Incident incident2 = new Incident();
         incident2.setId(2L);
         incident2.setInfo("test record 2");
-        incident2.setIncidentLevel(2);
-        incident2.setStatus(2);
+        incident2.setIncidentLevel(IncidentLevelEnum.LOW.getCode());
+        incident2.setStatus(IncidentStatusEnum.PROCESSING.getCode());
         incident2.setCreateBy("creator2");
         incidentMapper.insert(incident2);
     }
@@ -87,8 +86,8 @@ public class UnitTest {
         IncidentParam param = new IncidentParam();
         param.setInfo("test record 3");
         param.setCreator("creator");
-        param.setLevel(1);
-        param.setStatus(1);
+        param.setLevel(IncidentLevelEnum.HIGH.getCode());
+        param.setStatus(IncidentStatusEnum.FINISH.getCode());
         mockMvc.perform(post("/incident")
                         .content(JSON.toJSONString(param))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -116,8 +115,8 @@ public class UnitTest {
         IncidentParam param = new IncidentParam();
         param.setInfo("update record 1");
         param.setCreator("creator");
-        param.setLevel(3);
-        param.setStatus(3);
+        param.setLevel(IncidentLevelEnum.LOW.getCode());
+        param.setStatus(IncidentStatusEnum.PROCESSING.getCode());
 
         mockMvc.perform(put("/incident/{id}", toUpdateId)
                         .content(JSON.toJSONString(param))
@@ -132,8 +131,8 @@ public class UnitTest {
         IncidentParam param = new IncidentParam();
         param.setInfo("update record 100");
         param.setCreator("creator");
-        param.setLevel(3);
-        param.setStatus(3);
+        param.setLevel(IncidentLevelEnum.LOW.getCode());
+        param.setStatus(IncidentStatusEnum.PROCESSING.getCode());
         mockMvc.perform(put("/incident/{id}", toUpdateId)
                         .content(JSON.toJSONString(param))
                         .contentType(MediaType.APPLICATION_JSON))
