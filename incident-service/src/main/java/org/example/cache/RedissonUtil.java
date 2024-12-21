@@ -18,8 +18,6 @@ public class RedissonUtil {
     @Resource
     private RedissonClient redissonClient;
 
-
-    // 批量查询 返回K V map
     public Map<String, Object> getBatchByKeys(List<String> keys) {
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -44,7 +42,6 @@ public class RedissonUtil {
         return resultMap;
     }
 
-    // 批量存储 设置统一过期时间
     public void setBatchByMap(Map<String, Object> map, long timeToLive, TimeUnit timeUnit) {
 
         RBatch batch = redissonClient.createBatch();

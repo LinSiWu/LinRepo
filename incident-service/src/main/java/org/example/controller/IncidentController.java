@@ -7,9 +7,11 @@ import org.example.param.IncidentParam;
 import org.example.param.IncidentSearchParam;
 import org.example.result.IncidentResult;
 import org.example.result.PageResult;
+import org.example.service.IncidentService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Api(tags = "incident api")
@@ -17,11 +19,13 @@ import java.util.List;
 @RequestMapping(value = "/incident")
 public class IncidentController {
 
+    @Resource
+    private IncidentService incidentService;
+
     @ApiOperation(value = "query one incident by id")
     @GetMapping("/{id}")
     public ResponseDTO<IncidentResult> getById(@PathVariable Long id) {
-        // TODO
-        return ResponseDTO.success(null);
+        return ResponseDTO.success(incidentService.getById(id));
     }
 
     @ApiOperation(value = "search incidents by condition")
@@ -40,7 +44,7 @@ public class IncidentController {
 
     @ApiOperation(value = "create incident")
     @PostMapping("/create")
-    public ResponseDTO<IncidentResult> create(@Validated @RequestBody IncidentParam incidentParam) {
+    public ResponseDTO<Long> create(@Validated @RequestBody IncidentParam incidentParam) {
         // TODO
         return ResponseDTO.success(null);
     }
