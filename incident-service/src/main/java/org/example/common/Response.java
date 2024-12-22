@@ -7,7 +7,6 @@ import java.io.Serializable;
 public class Response<T> implements Serializable {
     protected int code;
     protected String msg;
-    protected long timestamp;
     protected T data;
 
     public static <T> Response<T> success(T data) {

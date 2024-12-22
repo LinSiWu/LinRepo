@@ -32,6 +32,9 @@ public class IncidentResult implements Serializable {
     @ApiModelProperty("incident updateTime")
     private Date updateTime;
 
+    @ApiModelProperty("incident info")
+    private String info;
+
     public static IncidentResult valueOf(Incident incident) {
         IncidentResult result = new IncidentResult();
         result.setIncidentId(incident.getId());
@@ -40,6 +43,7 @@ public class IncidentResult implements Serializable {
         result.setCreator(incident.getCreateBy());
         result.setCreateTime(incident.getCreateTime());
         result.setUpdateTime(incident.getUpdateTime());
+        result.setInfo(incident.getInfo());
         return result;
     }
 }

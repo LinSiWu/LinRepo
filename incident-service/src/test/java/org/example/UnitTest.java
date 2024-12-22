@@ -72,7 +72,8 @@ public class UnitTest {
 
         mockMvc.perform(get("/incident/{id}", insertId))
                 .andExpect(jsonPath("$.code").value(ResCodeEnum.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.data.incidentId").value(insertId));
+                .andExpect(jsonPath("$.data.incidentId").value(insertId))
+                .andExpect(jsonPath("$.data.info").value("something"));
     }
 
     @Test
